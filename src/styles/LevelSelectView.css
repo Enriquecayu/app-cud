@@ -1,0 +1,74 @@
+/* src/styles/LevelSelectView.css */
+
+.level-select-container {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 16px;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.level-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.level-select-title {
+    font-size: clamp(1.3rem, 4vw, 1.8rem);
+    color: #1e293b;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.levels-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* Cuadrícula de 2 columnas */
+    gap: 12px;
+    width: 100%;
+}
+
+.level-card {
+    background-color: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.level-card:hover {
+    background-color: #f8fafc;
+    border-color: #3b82f6;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px -2px rgb(59 130 246 / 0.15);
+}
+
+.level-card img {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 8px;
+}
+
+.level-card h4 {
+    margin: 4px 0;
+    font-size: 1rem;
+    color: #1e293b;
+}
+
+.level-card span {
+    font-size: 0.85rem;
+    color: #64748b;
+}
