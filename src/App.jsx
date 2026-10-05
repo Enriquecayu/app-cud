@@ -2,71 +2,75 @@ import React, { useState } from 'react';
 import { CategoriesView } from './views/CategoriesView';
 import { LevelSelectView } from './views/LevelSelectView';
 import { GameView } from './views/GameView';
+import { CompetitiveGameView } from './views/CompetitiveGameView';
 
 export function App() {
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [currentLevelIndex, setCurrentLevelIndex] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [currentLevelIndex, setCurrentLevelIndex] = useState(null);
 
-  // 1. Cuando eligen una categoría, vamos al menú de niveles de esa categoría
-  const handleSelectCategory = (category) => {
-    setSelectedCategory(category);
-    setCurrentLevelIndex(null); // Aún no hay un nivel seleccionado para jugar
-  };
+    const handleSelectCategory = (category) => {
+        setSelectedCategory(category);
+        setCurrentLevelIndex(null);
+    };
 
-  // 2. Cuando eligen un nivel específico de la lista
-  const handleSelectLevel = (index) => {
-    setCurrentLevelIndex(index);
-  };
+    const handleSelectLevel = (index) => {
+        setCurrentLevelIndex(index);
+    };
 
-  // 3. Volver al menú de categorías desde la lista de niveles
-  const handleBackToCategories = () => {
-    setSelectedCategory(null);
-    setCurrentLevelIndex(null);
-  };
+    const handleBackToCategories = () => {
+        setSelectedCategory(null);
+        setCurrentLevelIndex(null);
+    };
 
-  // 4. Volver a la lista de niveles desde el juego activo
-  const handleBackToLevels = () => {
-    setCurrentLevelIndex(null);
-  };
+    const handleBackToLevels = () => {
+        setCurrentLevelIndex(null);
+    };
 
-  // 5. Pasar al siguiente nivel o volver si se terminan
-  const handleNextLevel = () => {
-    if (currentLevelIndex + 1 < selectedCategory.levels.length) {
-      setCurrentLevelIndex(currentLevelIndex + 1);
-    } else {
-      alert('¡Has completado todos los niveles de esta categoría!');
-      setCurrentLevelIndex(null); // Regresa al selector de niveles
+    const handleNextLevel = () => {
+        if (currentLevelIndex + 1 < selectedCategory.levels.length) {
+            setCurrentLevelIndex(currentLevelIndex + 1);
+        } else {
+            alert('¡Has completado todos los niveles de esta categoría!');
+            setCurrentLevelIndex(null);
+        }
+    };
+
+    // 1. Pantalla de Selección de Categorías
+    if (!selectedCategory) {
+        return <CategoriesView onSelectCategory={handleSelectCategory} />;
     }
-  };
 
-  // RENDERIZADO CONDICIONAL DE PANTALLAS:
+    // 2. Pantalla de Selección de Subniveles (tanto para categorías normales como competitivo)
+    if (currentLevelIndex === null) {
+        return (
+            <LevelSelectView 
+                category={selectedCategory} 
+                onSelectLevel={handleSelectLevel} 
+                onBack={handleBackToCategories} 
+            />
+        );
+    }
 
-  // Pantalla 1: Selector de Categorías
-  if (!selectedCategory) {
-    return <CategoriesView onSelectCategory={handleSelectCategory} />;
-  }
+    // 3. SI ES LA CATEGORÍA COMPETITIVA
+    if (selectedCategory.isCompetitive) {
+        const selectedSubLevel = selectedCategory.levels[currentLevelIndex];
+        return (
+            <CompetitiveGameView 
+                levelData={selectedSubLevel} 
+                onBack={handleBackToLevels} 
+            />
+        );
+    }
 
-  // Pantalla 2: Selector de Niveles de la categoría elegida
-  if (currentLevelIndex === null) {
+    // 4. FLUJO NORMAL (Animales, Alimentos, etc.)
+    const currentLevel = selectedCategory.levels[currentLevelIndex];
     return (
-      <LevelSelectView
-        category={selectedCategory}
-        onSelectLevel={handleSelectLevel}
-        onBack={handleBackToCategories}
-      />
+        <GameView 
+            level={currentLevel} 
+            onNextLevel={handleNextLevel} 
+            onBack={handleBackToLevels} 
+        />
     );
-  }
-
-  // Pantalla 3: El juego en sí (`GameView`)
-  const currentLevel = selectedCategory.levels[currentLevelIndex];
-
-  return (
-    <GameView
-      level={currentLevel}
-      onNextLevel={handleNextLevel}
-      onBack={handleBackToLevels}
-    />
-  );
 }
 
 export default App;

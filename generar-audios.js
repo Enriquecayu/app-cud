@@ -10,10 +10,10 @@ const __dirname = path.dirname(__filename);
 
 // Lista completa de letras y palabras que necesitamos
 const itemsToGenerate = [
-    'casa'
+    "manzana","banana","leche","pan","naranja","queso","helado","pizza","agua","chocolate"
 ];
 // Ruta donde se guardarán los audios (dentro de public para que Vite los empaquete)
-const outputDir = path.join(__dirname, 'public', 'audio', 'letras');
+const outputDir = path.join(__dirname, 'public', 'audio', 'palabras');
 
 // Asegurarnos de que la carpeta exista
 if (!fs.existsSync(outputDir)) {
